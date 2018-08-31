@@ -8,6 +8,7 @@ class Banner extends Model
 {
     public static function getBannerByID($id)
     {
-        return self::find($id);
+        return null;
+//        return self::find($id);
     }
 }
