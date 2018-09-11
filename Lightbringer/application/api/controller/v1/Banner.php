@@ -7,9 +7,6 @@ use app\lib\exception\BannerMissException;
 
 class Banner
 {
-    /*
-     *  @param $id 多Banner号
-     */
     public function getBanner($id)
     {
         (new PositiveInteger())->goCheck(); //拦截器

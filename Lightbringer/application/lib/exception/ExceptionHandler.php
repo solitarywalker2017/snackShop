@@ -12,9 +12,10 @@ class ExceptionHandler extends Handle
     private $msg;
     private $errorCode;
 
-    // TP5底层抛出异常处理函数
-    public function render(Exception $e)
+
+    public function render(\Exception $e)
     {
+        // TP5底层抛出异常处理函数
         if ($e instanceof BaseException) {
             //自定义异常
             $this->code = $e->code;
@@ -39,7 +40,7 @@ class ExceptionHandler extends Handle
         return json($result, $this->code);
     }
 
-    private function recordInternalError(Exception $e)
+    private function recordInternalError(\Exception $e)
     {
         Log::init([
             'type' => 'file',
