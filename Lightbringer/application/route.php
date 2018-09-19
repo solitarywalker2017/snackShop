@@ -11,5 +11,8 @@ Route::get('product/cate/:id', 'api/v1.Product/getProductsByCate');
 
 Route::get('category', 'api/v1.category/getCategories');
 
+// 使用POST方式部分提高安全性
+Route::post('token/user', 'api/v1.token/getToken');
+
 
 

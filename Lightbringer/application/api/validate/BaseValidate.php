@@ -25,4 +25,9 @@ class BaseValidate extends Validate
             return false;
         }
     }
+
+    protected function isNotEmpty($value)
+    {
+        return empty($value) ? false : true;
+    }
 }

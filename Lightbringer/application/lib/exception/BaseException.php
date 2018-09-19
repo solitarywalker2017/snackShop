@@ -23,10 +23,10 @@ class BaseException extends Exception
             $this->code = $params['code'];
         }
         if (array_key_exists('errorCode', $params)) {
-            $this->code = $params['errorCode'];
+            $this->errCode = $params['errorCode'];
         }
         if (array_key_exists('msg', $params)) {
-            $this->code = $params['msg'];
+            $this->msg = $params['msg'];
         }
     }
 }
