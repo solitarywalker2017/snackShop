@@ -30,4 +30,20 @@ class BaseValidate extends Validate
     {
         return empty($value) ? false : true;
     }
+
+    //参数过滤
+    public function getDataByRule($data)
+    {
+        if (array_key_exists('user_id', $data) || array_key_exists('uid', $data)) {
+            throw new ParameterException([
+                'msg' => '参数中含有非法字段'
+            ]);
+        } // 过滤body中的UID值
+        //构建新校验规则
+        $legalData = [];
+        foreach ($this->rule as $k => $v) {
+            $legalData[$v[0]] = $data[$v[0]];
+        }
+        return $legalData;
+    }
 }

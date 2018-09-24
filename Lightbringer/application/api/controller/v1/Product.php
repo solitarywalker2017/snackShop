@@ -10,7 +10,6 @@ use think\Controller;
 
 class Product extends Controller
 {
-
     public function getLastests($count = 14)
     {
         (new Count())->goCheck();
@@ -31,6 +30,17 @@ class Product extends Controller
         $this->hiddenSummary($result);
         return $result;
     }
+
+    public function getDetail($id)
+    {
+        (new PositiveInteger())->goCheck();
+        $result = ProductModel::getProductByID($id);
+        if (!$result) {
+            throw new ProductMissException();
+        }
+        return $result;
+    }
+
 
     /**
      * 临时性隐藏Summary字段
