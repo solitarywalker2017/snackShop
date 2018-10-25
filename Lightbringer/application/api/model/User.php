@@ -13,7 +13,7 @@ class User extends Base
 
     public static function getUserByOpenID($openid)
     {
-        return self::where('openid', $openid)->find();
+        return self::with(['address'])->where('openid', $openid)->find();
     }
 
     public static function createUserByOpenID($openid)

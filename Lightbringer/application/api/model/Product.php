@@ -5,6 +5,7 @@ namespace app\api\model;
 class Product extends Base
 {
     protected $hidden = ['delete_time', 'update_time', 'from', 'category_id', 'create_time', 'img_id', 'pivot'];
+    protected $validate = ['id', 'price', 'stock', 'name', 'main_img_url'];
 
     public function getMainImgUrlAttr($value, $data)
     {
@@ -39,10 +40,16 @@ class Product extends Base
 
     public static function getProductByID($id)
     {
+        // 闭包查询
         return self::with(['property'])
             ->with(['image' => function ($query) {
                 $query->with(['imgUrl'])->order('order', 'asc');
             }])
             ->find($id);
+    }
+
+    public static function getProductsByOrder($productIDs)
+    {
+        return self::select($productIDs);
     }
 }

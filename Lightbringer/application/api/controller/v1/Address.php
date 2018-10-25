@@ -2,14 +2,18 @@
 
 namespace app\api\controller\v1;
 
+use app\api\controller\Base;
 use app\api\model\User as UserModel;
 use app\api\service\Token;
 use app\api\validate\Address as AddressValidate;
 use app\lib\exception\UserMissException;
-use think\Controller;
 
-class Address extends Controller
+class Address extends Base
 {
+    protected $beforeActionList = [
+        'checkPrimaryScope' => ['only' => 'createAddress']
+    ];
+
     public function createAddress()
     {
         $validate = new AddressValidate();
@@ -25,7 +29,7 @@ class Address extends Controller
             // 模型关联更新
             $user->address()->save($data);
         } else {
-            $user->address->update($data);
+            $user->address->update($data, ['user_id' => $uid]);
         }
         return json('操作成功！', 201);
     }

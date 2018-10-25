@@ -4,12 +4,14 @@ use think\Route;
 // 默认从头匹配
 Route::get('banner/:id', 'api/v1.Banner/getBanner');
 
-Route::get('category', 'api/v1.category/getCategories');
+Route::get('category', 'api/v1.Category/getCategories');
 
 // 使用POST方式部分提高安全性
-Route::post('token/user', 'api/v1.token/getToken');
+Route::post('token/user', 'api/v1.Token/getToken');
 
 Route::post('address', 'api/v1.Address/createAddress');
+
+Route::post('order', 'api/v1.Order/placeOrders');
 
 Route::group('theme', function () {
     Route::get('/', 'api/v1.Theme/getThemes');

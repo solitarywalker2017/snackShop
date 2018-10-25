@@ -2,6 +2,8 @@
 namespace app\api\service;
 
 
+use app\lib\enum\ScopeEnum;
+use app\lib\exception\ForbiddenException;
 use app\lib\exception\TokenException;
 use think\Cache;
 use think\Exception;
@@ -10,6 +12,10 @@ class Token
 {
     const LENGTH_STR = 32;
 
+    /**
+     * 生成Token的key
+     * @return string
+     */
     public static function generateToken()
     {
         //组成一个随机字符串
@@ -19,10 +25,43 @@ class Token
         return md5($tokenName . $timestamp . $salt);
     }
 
+    public static function getCurrentScope()
+    {
+        $currentScope = self::getCurrentToken('scope');
+        return $currentScope;
+    }
+
     public static function getCurrentUID()
     {
         $currentUID = self::getCurrentToken('uid');
         return $currentUID;
+    }
+
+    // 验证用户权限
+    public static function needScope($userLevel)
+    {
+        $currentScope = self::getCurrentScope();
+        if ($currentScope) {
+            $condition = '';
+            switch ($userLevel) {
+                case 'user':
+                    $condition = $currentScope . "==" . ScopeEnum::$userScope;
+                    break;
+                case 'admin':
+                    $condition = $currentScope . "==" . ScopeEnum::$adminScope;
+                    break;
+                case 'both':
+                    $condition = $currentScope . ">=" . ScopeEnum::$userScope;
+                    break;
+            }
+            if ($condition) {
+                return true;
+            } else {
+                throw  new ForbiddenException();
+            }
+        } else {
+            throw new TokenException();
+        }
     }
 
     /**

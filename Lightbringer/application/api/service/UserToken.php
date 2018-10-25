@@ -3,6 +3,7 @@ namespace app\api\service;
 
 
 use app\api\model\User as UserModel;
+use app\lib\enum\ScopeEnum;
 use app\lib\exception\TokenException;
 use app\lib\exception\WxException;
 use think\Exception;
@@ -12,8 +13,6 @@ class UserToken extends Token
     private $appid = '';
     private $secret = '';
     private $code = ''; //用户凭证
-
-    const NUMBER_SCOPE = 16; //权限等级
 
     public function __construct($code)
     {
@@ -56,6 +55,7 @@ class UserToken extends Token
     {
         // 拿到OpenID
         $openid = $res['openid'];
+
         // 查询OpenID是否存在，不存在则新增
         $result = UserModel::getUserByOpenID($openid);
         if (!$result) {
@@ -79,7 +79,7 @@ class UserToken extends Token
         $value = json_encode([
             'result' => $result,
             'uid' => $uid,
-            'scope' => self::NUMBER_SCOPE
+            'scope' => ScopeEnum::$userScope
         ]);
         $key = self::generateToken();
         $expire = config('website.token_expire');
